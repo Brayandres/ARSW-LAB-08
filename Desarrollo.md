@@ -92,6 +92,47 @@ Ejecución
 ![Imágen 3](Evidencia/ChangeSize.jpg)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
+    * 1000000
+   
+   ![Imágen 1](Evidencia/1000000.2.jpg)
+   
+    * 1010000
+   
+   ![Imágen 1](Evidencia/1010000.2.jpg)
+   
+    * 1020000
+   
+   ![Imágen 1](Evidencia/1020000.2.jpg)
+   
+    * 1030000
+   
+   ![Imágen 1](Evidencia/1030000.2.jpg)
+   
+    * 1040000
+   
+   ![Imágen 1](Evidencia/1040000.2.jpg)
+   
+    * 1050000
+   
+   ![Imágen 1](Evidencia/1050000.2.jpg)
+   
+    * 1060000
+   
+   ![Imágen 1](Evidencia/1060000.2.jpg)
+   
+    * 1070000
+   
+   ![Imágen 1](Evidencia/1070000.1.jpg)
+   
+    * 1080000
+   
+   ![Imágen 1](Evidencia/1080000.2.jpg)
+   
+    * 1090000    
+   
+   ![Imágen 1](Evidencia/1090000.2.jpg)
+   
+
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
