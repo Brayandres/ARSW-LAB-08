@@ -4,80 +4,92 @@
 ## Escalamiento en Azure con Maquinas Virtuales, Sacale Sets y Service Plans
 
 ### Dependencias
-* Cree una cuenta gratuita dentro de Azure. Para hacerlo puede guiarse de esta [documentación](https://azure.microsoft.com/en-us/free/search/?&ef_id=Cj0KCQiA2ITuBRDkARIsAMK9Q7MuvuTqIfK15LWfaM7bLL_QsBbC5XhJJezUbcfx-qAnfPjH568chTMaAkAsEALw_wcB:G:s&OCID=AID2000068_SEM_alOkB9ZE&MarinID=alOkB9ZE_368060503322_%2Bazure_b_c__79187603991_kwd-23159435208&lnkd=Google_Azure_Brand&dclid=CjgKEAiA2ITuBRDchty8lqPlzS4SJAC3x4k1mAxU7XNhWdOSESfffUnMNjLWcAIuikQnj3C4U8xRG_D_BwE). Al hacerlo usted contará con $200 USD para gastar durante 1 mes.
-
-### Parte 0 - Entendiendo el escenario de calidad
-
-Adjunto a este laboratorio usted podrá encontrar una aplicación totalmente desarrollada que tiene como objetivo calcular el enésimo valor de la secuencia de Fibonnaci.
-
-**Escalabilidad**
-Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000) de la secuencia de Fibonacci de forma concurrente y el sistema se encuentra bajo condiciones normales de operación, todas las peticiones deben ser respondidas y el consumo de CPU del sistema no puede superar el 70%.
+![Imágen 1](Evidencia/Cuenta.jpg)
 
 ### Parte 1 - Escalabilidad vertical
 
-1. Diríjase a el [Portal de Azure](https://portal.azure.com/) y a continuación cree una maquina virtual con las características básicas descritas en la imágen 1 y que corresponden a las siguientes:
-    * Resource Group = SCALABILITY_LAB
-    * Virtual machine name = VERTICAL-SCALABILITY
-    * Image = Ubuntu Server 
-    * Size = Standard B1ls
-    * Username = scalability_lab
-    * SSH publi key = Su llave ssh publica
+1.Creación de Máquina
 
-![Imágen 1](images/part1/part1-vm-basic-config.png)
+![Imágen 1](Evidencia/VerticalMachine.jpg)
 
-2. Para conectarse a la VM use el siguiente comando, donde las `x` las debe remplazar por la IP de su propia VM.
 
-    `ssh scalability_lab@xxx.xxx.xxx.xxx`
+3. Instale node
 
-3. Instale node, para ello siga la sección *Installing Node.js and npm using NVM* que encontrará en este [enlace](https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/).
-4. Para instalar la aplicación adjunta al Laboratorio, suba la carpeta `FibonacciApp` a un repositorio al cual tenga acceso y ejecute estos comandos dentro de la VM:
+![Imágen 1](Evidencia/NodeInstallation.jpg)
 
-    `git clone <your_repo>`
+5. Para instalar la aplicación adjunta al Laboratorio, suba la carpeta `FibonacciApp` a un repositorio al cual tenga acceso y ejecute estos comandos dentro de la VM:
 
-    `cd <your_repo>/FibonacciApp`
-
-    `npm install`
+![Imágen 1](Evidencia/FibonacciInstalled.jpg)
 
 5. Para ejecutar la aplicación puede usar el comando `npm FibinacciApp.js`, sin embargo una vez pierda la conexión ssh la aplicación dejará de funcionar. Para evitar ese compartamiento usaremos *forever*. Ejecute los siguientes comando dentro de la VM.
 
-    `npm install forever -g`
-
-    `forever start FibinacciApp.js`
+![Imágen 1](Evidencia/InstallForever.jpg)
+![Imágen 1](Evidencia/ForeverFibonacci.jpg)
 
 6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 
-![](images/part1/part1-vm-3000InboudRule.png)
+![Imágen 1](Evidencia/RuleCreated.jpg)
+![Imágen 1](Evidencia/FirstEndpointTest.jpg)
 
 7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
     * 1000000
+   
+   ![Imágen 1](Evidencia/1000000.jpg)
+   
     * 1010000
+   
+   ![Imágen 1](Evidencia/1010000.jpg)
+   
     * 1020000
+   
+   ![Imágen 1](Evidencia/1020000.jpg)
+   
     * 1030000
+   
+   ![Imágen 1](Evidencia/1030000.jpg)
+   
     * 1040000
+   
+   ![Imágen 1](Evidencia/1040000.jpg)
+   
     * 1050000
+   
+   ![Imágen 1](Evidencia/1050000.jpg)
+   
     * 1060000
+   
+   ![Imágen 1](Evidencia/1060000.jpg)
+   
     * 1070000
+   
+   ![Imágen 1](Evidencia/1070000.jpg)
+   
     * 1080000
+   
+   ![Imágen 1](Evidencia/1080000.jpg)
+   
     * 1090000    
+   
+   ![Imágen 1](Evidencia/1090000.jpg)
+   
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
-![Imágen 2](images/part1/part1-vm-cpu.png)
+![Imágen 1](Evidencia/CpuUsage1.jpg)
 
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
-    * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
-    * Diríjase hasta la ruta `FibonacciApp/postman` en una maquina diferente a la VM.
-    * Para el archivo `[ARSW_LOAD-BALANCING_AZURE].postman_environment.json` cambie el valor del parámetro `VM1` para que coincida con la IP de su VM.
-    * Ejecute el siguiente comando.
+Archivo
 
-    ```
-    newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
-    newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
-    ```
+![Imágen 1](Evidencia/ConfigureFile1.jpg)
+
+Ejecución
+
+![Imágen 1](Evidencia/PostmanTest1.1.jpg)
+![Imágen 1](Evidencia/PostmanTest1.2.jpg)
 
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
-![Imágen 3](images/part1/part1-vm-resize.png)
+![Imágen 3](Evidencia/ChangeSize.jpg)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
