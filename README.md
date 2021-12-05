@@ -139,7 +139,7 @@ Archivo
 
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
 
-   Teniendo en cuenta que realizando el escalamiento vertical no hubo una mejora significativa en el tiempo que duran las consultas ni tampoco hubo una mejora real respecto a las peticiones concurrentes, podemos decir que para nada estamos cumpliendo el escenario de calidad propuesto, ya que el uso de la CPU está casi al 100% durante todo el tiempo de jecución y la disponibilidad no mejora en lo absoluto.
+      Teniendo en cuenta que realizando el escalamiento vertical no hubo una mejora significativa en el tiempo que duran las consultas ni tampoco hubo una mejora real respecto a las peticiones concurrentes, podemos decir que para nada estamos cumpliendo el escenario de calidad propuesto, ya que el uso de la CPU está casi al 100% durante todo el tiempo de jecución y la disponibilidad no mejora en lo absoluto.
 
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
